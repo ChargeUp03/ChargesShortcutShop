@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charge's Shortcut Shop</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Palette Updates */
+            --bg-color: #151515;
+            --card-base: #1b1b1c;
+            --accent-color: #0071e3;
+            --text-color: #f5f5f7;
+            --secondary-text: #98989d;
+            
+            /* Glassmorphism Variables */
+            --glass-bg: rgba(27, 27, 28, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-blur: blur(25px);
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+            
+            --radius: 20px;
+            --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* --- Global Reset & Scrollbars --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { color-scheme: dark; }
+
+        body {
+            font-family: var(--font-stack);
+            background-color: var(--bg-color);
+            /* Subtle ambient gradient */
+            background-image: radial-gradient(circle at 50% -20%, rgba(0, 113, 227, 0.15), transparent 50%);
+            color: var(--text-color);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            overflow-y: scroll;
+        }
+
+        /* Dark Mode Scrollbars */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { 
+            background: #333; 
+            border-radius: 5px; 
+            border: 2px solid var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        /* --- Header --- */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(21, 21, 21, 0.85);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 16px 0;
+        }
+
+        .header-content {
+            max-width: 980px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .logo-area:hover { opacity: 0.8; }
+
+        .logo-img {
+            width: 36px;
+            height: 36px;
+            background-color: #333; /* Placeholder */
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid var(--glass-border);
+        }
+
+        .site-title {
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: -0.01em;
+        }
+
+        nav a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-left: 20px;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: #409cff; }
+
+        /* --- Layout Containers --- */
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 30px 24px;
+        }
+
+        .view {
+            display: none;
+            animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .view.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Glass Components --- */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: var(--radius);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-sm);
+            padding: 24px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        h2 { margin-bottom: 20px; font-size: 1.7rem; font-weight: 700; letter-spacing: -0.02em; }
+        h3 { margin-bottom: 12px; font-size: 1.3rem; margin-top: 24px; font-weight: 600; }
+        p { line-height: 1.6; color: var(--secondary-text); margin-bottom: 12px; }
+        ul { list-style-position: inside; color: var(--secondary-text); margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 99px;
+            padding: 8px 22px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .btn:hover { transform: scale(1.02); filter: brightness(1.1); }
+        .btn:active { transform: scale(0.98); }
+        
+        .btn.disabled { 
+            background-color: rgba(255,255,255,0.1); 
+            color: var(--secondary-text); 
+            cursor: default; 
+            pointer-events: none;
+        }
+
+        /* --- Top Banner (Home) --- */
+        .hero-banner {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at top right, rgba(0,113,227,0.2), transparent 60%);
+        }
+
+        .hero-content {
+            z-index: 2;
+            text-align: center;
+        }
+        .hero-content h1 { font-size: 2rem; margin-bottom: 8px; }
+        .hero-content p { color: var(--secondary-text); }
+
+        /* --- Shortcut List (Tiles) --- */
+        .shortcut-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .shortcut-item {
+            display: flex;
+            flex-direction: column;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 20px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        
+        .shortcut-item:hover {
+            background: rgba(44, 44, 46, 0.8);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .shortcut-header-desktop {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .shortcut-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background-color: #333;
+            object-fit: cover;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .shortcut-info { flex-grow: 1; }
+        .shortcut-title { font-size: 1.15rem; font-weight: 600; color: var(--text-color); margin-bottom: 6px; }
+        .shortcut-tagline { 
+            font-size: 0.9rem; color: var(--secondary-text); 
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        /* --- Automator Section --- */
+        .automator-section {
+            margin-top: 50px;
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid var(--glass-border);
+        }
+        .automator-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; opacity: 0.7; }
+        .automator-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            padding: 5px 12px;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        /* --- Detail Page --- */
+        .back-btn {
+            background: transparent;
+            color: var(--accent-color);
+            padding: 0;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .detail-header {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 30px;
+            align-items: center;
+        }
+
+        .detail-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 28px;
+            background-color: #333;
+            box-shadow: var(--shadow-lg);
+            object-fit: cover;
+        }
+
+        .detail-meta h1 { font-size: 1.8rem; margin-bottom: 6px; }
+        .detail-meta h4 { color: var(--secondary-text); font-weight: 400; margin-bottom: 16px; font-size: 1.1rem; }
+        
+        .whats-new {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .version-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .version-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        /* --- Screenshots --- */
+        .screenshots-container {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            scroll-snap-type: x mandatory;
+        }
+        
+        .screenshot {
+            width: 220px;
+            height: 440px;
+            background-color: #2c2c2e;
+            border-radius: 16px;
+            flex-shrink: 0;
+            scroll-snap-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            font-size: 0.85rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .info-grid { grid-template-columns: 1fr; }
+            .detail-sidebar { order: -1; }
+            .shortcut-list { grid-template-columns: 1fr; }
+        }
+
+        .section-box { margin-bottom: 24px; }
+        .section-title { font-weight: 600; margin-bottom: 10px; font-size: 1.1rem; color: var(--text-color); }
+
+        /* --- Compatibility & About --- */
+        .ua-container {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .ua-icon { width: 24px; height: 24px; fill: var(--secondary-text); }
+        .ua-text { display: flex; flex-direction: column; }
+        .ua-device { font-weight: 600; font-size: 0.9rem; }
+        .ua-os { font-size: 0.8rem; color: var(--secondary-text); }
+
+        .device-badge {
+            display: inline-block;
+            padding: 6px 10px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 8px;
+            margin-right: 6px;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* --- Places To Use It --- */
+        .place-card {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 24px;
+            align-items: center;
+            background: rgba(255,255,255,0.03);
+            padding: 16px;
+            border-radius: 16px;
+        }
+        .place-img {
+            width: 70px;
+            height: 70px;
+            background: #333;
+            border-radius: 14px;
+            flex-shrink: 0;
+            object-fit: cover;
+        }
+
+        /* --- Modal (Version History) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .modal-overlay.open { display: flex; opacity: 1; }
+        
+        .modal-card {
+            background: #1c1c1e;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-lg);
+            padding: 24px;
+            transform: scale(0.95);
+            transition: transform 0.3s;
+        }
+        .modal-overlay.open .modal-card { transform: scale(1); }
+        
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .close-modal { background: none; border: none; font-size: 1.5rem; color: var(--secondary-text); cursor: pointer; }
+
+        /* SVG Icons Utility */
+        .icon { width: 16px; height: 16px; fill: currentColor; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <div class="logo-area" onclick="router('home')">
+            <img src="" alt="" class="logo-img"> 
+            <div class="site-title">Charge's Shortcut Shop</div>
+        </div>
+        <nav>
+            <a href="#" onclick="router('home')">Home</a>
+            <a href="#" onclick="router('places')">Places</a>
+            <a href="#" onclick="router('about')">About</a>
+        </nav>
+    </div>
+</header>
+
+<div class="container">
+
+    <div id="home-view" class="view active">
+        <div class="hero-banner">
+            <div class="hero-content">
+                <h1>Welcome to the Shop</h1>
+                <p>High quality Shortcuts for your Apple Devices.</p>
+            </div>
+        </div>
+
+        <h2>Shortcuts</h2>
+        <div class="shortcut-list" id="shortcut-list-container">
+            </div>
+
+        <div class="automator-section">
+            <div class="automator-title">Automator Actions</div>
+            <div class="automator-badge">Coming Soon</div>
+            <p style="margin-top:10px; font-size:0.9rem;">Powerful workflows for your Mac are on the way.</p>
+        </div>
+    </div>
+
+    <div id="detail-view" class="view">
+        <button onclick="router('home')" class="btn back-btn">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            Back to Shop
+        </button>
+        <div id="detail-content">
+            </div>
+    </div>
+
+    <div id="places-view" class="view">
+        <div class="glass-panel">
+            <h2>Places To Use It</h2>
+            <p>Clicking on the Places to use it text on a shortcut page takes you here.</p>
+            
+            <div class="place-card">
+                <img src="" alt="Home Screen" class="place-img">
+                <div>
+                    <h3>Home Screen</h3>
+                    <p>Run a Shortcut from your Home Screen by selecting the arrow next to the name, then tapping Add to Home Screen, then Add. Tap the icon to run the Shortcut.</p>
+                </div>
+            </div>
+
+            <div class="place-card">
+                <img src="" alt="Lock Screen" class="place-img">
+                <div>
+                    <h3>Lock Screen</h3>
+                    <p>On recent iOS and iPadOS versions, you can set a Shortcut as one of two buttons on the Lock Screen. Hold the lock screen, tap Customize, tap the '-' button to remove the current action if it's there, tap the '+', search for Run Shortcut, tap Choose, select the Shortcut, then tap Done.</p>
+                </div>
+            </div>
+
+            <div class="place-card">
+                <img src="" alt="Control Center" class="place-img">
+                <div>
+                    <h3>Control Center</h3>
+                    <p>On recent versions of iOS and iPadOS, you can add Shortcuts to the Control Center. Hold a blank space or tap the '+' at the top left corner, tap Add a Control, search for Run Shortcut, choose a Shortcut, resize it, then tap anywhere.</p>
+                </div>
+            </div>
+
+            <div class="place-card">
+                <img src="" alt="Shortcuts App" class="place-img">
+                <div>
+                    <h3>Shortcuts App</h3>
+                    <p>Run a shortcut from the Shortcuts app by pressing the play icon on the top or bottom of the screen, depending on your OS.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="about-view" class="view">
+        <div class="glass-panel">
+            <h2>About</h2>
+            <p>This site is created and managed by Charge, as well as the shortcuts. I am not affiliated with Apple or Nintendo in any way.</p>
+            
+            <h3>Devices used for testing:</h3>
+            <ul>
+                <li><strong>iPhones:</strong> Apple iPhone 14 (iOS 26), Apple iPhone SE (iOS 15), Apple iPhone 6 (iOS 12)</li>
+                <li><strong>iPads:</strong> Apple iPad 10th generation (iOS 26), Apple iPad 9th generation (iOS 26)</li>
+                <li><strong>Apple Watch:</strong> Apple Watch SE (watchOS 26)</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<div id="version-modal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Version History</h3>
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+        </div>
+        <div id="modal-content"></div>
+    </div>
+</div>
+
+<script>
+    // Data populated from PDF
+    const shortcuts = [
+        {
+            id: 'device-details',
+            title: 'Get Device Details',
+            version: 'v2.0',
+            tagline: 'View information about your device',
+            description: 'Get Device Details allows you to view all sorts of information about your device, from OS, to network, to even your screen size! You can also create a report of all the information that it can pull.',
+            whatsNew: [
+                { ver: 'v2.0', note: 'Added Get Report; Added About' },
+                { ver: 'v1.0', note: 'Initial Release' }
+            ],
+            link: 'https://www.icloud.com/shortcuts/6478bd3e3a9049b285f1e7788672b699',
+            oldLink: 'https://www.icloud.com/shortcuts/ec7c7570437142718ee8b063c9062f1d',
+            previewCount: 5,
+            devices: ['iPhone', 'iPad', 'Apple Watch (partial)', 'Mac (partial)', 'Vision Pro'],
+            versions: { 'iPhone': 'iOS 13-26', 'iPad': 'iPadOS 13-26', 'Watch': 'watchOS 7-26', 'Mac': 'macOS 12-26', 'Vision Pro': 'visionOS 1-26' },
+            dependencies: 'This Shortcut has no dependencies.',
+            places: 'Shortcuts App',
+            notes: 'Some actions may not work on iPad, Apple Watch, Mac, or Vision Pro. Additionally, some parameters may be blank on these devices.',
+            setup: ['1. Select Get at the top of this page', '2. Select Get Shortcut at the bottom of the iCloud page', '3. Select Add Shortcut']
+        },
+        {
+            id: 'quickweather',
+            title: 'QuickWeather',
+            version: 'v1.0',
+            tagline: 'See the weather at a glance!',
+            description: 'See the weather quickly, or pull down the notification to view more information.',
+            whatsNew: [{ ver: 'v1.0', note: 'Created Shortcut' }],
+            link: 'https://www.icloud.com/shortcuts/96c7e8b155484f18ae23288a32f32a95',
+            previewCount: 1,
+            devices: ['iPhone', 'iPad', 'Apple Watch', 'Mac', 'Vision Pro'],
+            versions: { 'iPhone': 'iOS 13-26', 'iPad': 'iPadOS 13-26', 'Watch': 'watchOS 7-26', 'Mac': 'macOS 11-26', 'Vision Pro': 'visionOS 1-26' },
+            dependencies: 'This Shortcut has no dependencies.',
+            places: 'Home Screen, Control Center, Lock Screen',
+            setup: ['1. Select Get at the top of this page', '2. Select Get Shortcut at the bottom of the iCloud page', '3. Select Add Shortcut']
+        },
+        {
+            id: 'killswitch',
+            title: 'Connectivity Killswitch',
+            version: 'v1.0',
+            tagline: 'Quickly turn off all connectivity.',
+            description: 'Turns off all connectivity.',
+            whatsNew: [{ ver: 'v1.0', note: 'Created Shortcut' }],
+            link: 'https://www.icloud.com/shortcuts/44e79eba1eb54e93956d76d90490b50f',
+            previewCount: 2,
+            devices: ['iPhone', 'iPad', 'Apple Watch', 'Mac', 'Vision Pro'],
+            versions: { 'iPhone': 'iOS 13-26', 'iPad': 'iPadOS 13-26', 'Watch': 'watchOS 7-26', 'Mac': 'macOS 11-26', 'Vision Pro': 'visionOS 1-26' },
+            dependencies: 'This Shortcut has no dependencies.',
+            places: 'Home Screen, Control Center, Lock Screen',
+            setup: ['1. Select Get at the top of this page', '2. Select Get Shortcut at the bottom of the iCloud page', '3. Select Add Shortcut']
+        },
+        {
+            id: 'fastnav',
+            title: 'FastNav',
+            version: 'v1.0',
+            tagline: 'Get to your favorite places faster!',
+            description: 'Enter 3 places, then navigate to them with the tap of a button (or two)!',
+            whatsNew: [{ ver: 'v1.0', note: 'Created Shortcut' }],
+            link: 'https://www.icloud.com/shortcuts/d574e411b4e6447680d0aae204e4b0bf',
+            previewCount: 2,
+            devices: ['iPhone', 'iPad', 'Apple Watch', 'Mac', 'Vision Pro'],
+            versions: { 'iPhone': 'iOS 13-26', 'iPad': 'iPadOS 13-26', 'Watch': 'watchOS 7-26', 'Mac': 'macOS 11-26', 'Vision Pro': 'visionOS 1-26' },
+            dependencies: 'This Shortcut has no dependencies.',
+            places: 'Home Screen',
+            notes: 'You cannot navigate to places on Mac or Vision Pro.',
+            setup: ['1. Select Get at the top of this page', '2. Select Get Shortcut at the bottom of the iCloud page', '3. Select Add Shortcut', 'Additional Setup: 1. Tap "..." on FastNav', '2. Scroll down and enter 3 addresses you would like to navigate to']
+        },
+        {
+            id: 'selfdestruct',
+            title: 'Self Destruct',
+            version: 'v1.0',
+            tagline: 'A fun shortcut that self-destructs your device.',
+            description: 'Blow up your device!',
+            whatsNew: [{ ver: 'v1.0', note: 'Created Shortcut' }],
+            link: 'https://www.icloud.com/shortcuts/a0fb189bdd414285acdc7d99be85b313',
+            previewCount: 2,
+            devices: ['iPhone', 'iPad', 'Apple Watch', 'Mac (partial)', 'Vision Pro'],
+            versions: { 'iPhone': 'iOS 13-26', 'iPad': 'iPadOS 13-26', 'Watch': 'watchOS 7-26', 'Mac': 'macOS 11-26', 'Vision Pro': 'visionOS 1-26' },
+            dependencies: 'This Shortcut has no dependencies.',
+            places: 'Anywhere',
+            setup: ['1. Select Get at the top of this page', '2. Select Get Shortcut at the bottom of the iCloud page', '3. Select Add Shortcut']
+        },
+        {
+            id: 'mariokart',
+            title: 'Mario Kart Item Box',
+            version: 'v1.0',
+            tagline: 'Use some Mario Kart items!', 
+            description: 'Use some Mario Kart items!',
+            whatsNew: [{ ver: 'v1.0', note: 'Created Shortcut' }],
+            link: null, // Force disable
+            previewCount: 1,
+            devices: ['iPhone', 'iPad', 'Apple Watch', 'Mac', 'Vision Pro'],
+            versions: { 'iPhone': 'iOS 13-26', 'iPad': 'iPadOS 13-26', 'Watch': 'watchOS 7-26', 'Mac': 'macOS 11-26', 'Vision Pro': 'visionOS 1-26' },
+            dependencies: 'This Shortcut has no dependencies.',
+            places: 'Anywhere',
+            setup: ['1. Select Get at the top of this page', '2. Select Get Shortcut at the bottom of the iCloud page', '3. Select Add Shortcut']
+        }
+    ];
+
+    // --- Utility: Parse UA ---
+    function getDeviceDetails() {
+        const ua = navigator.userAgent;
+        let os = 'Unknown OS';
+        let device = 'Unknown Device';
+        
+        if (/iPhone/.test(ua)) { device = 'iPhone'; os = 'iOS'; }
+        else if (/iPad/.test(ua)) { device = 'iPad'; os = 'iPadOS'; }
+        else if (/Mac/.test(ua)) { device = 'Mac'; os = 'macOS'; }
+        else if (/Android/.test(ua)) { device = 'Device'; os = 'Android'; }
+        else if (/Windows/.test(ua)) { device = 'PC'; os = 'Windows'; }
+        
+        return { device, os };
+    }
+
+    // --- Router ---
+    function router(viewName, dataId = null) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(viewName + '-view').classList.add('active');
+        window.scrollTo(0,0);
+        
+        if (viewName === 'home') renderHome();
+        else if (viewName === 'detail' && dataId) renderDetail(dataId);
+    }
+
+    // --- Renderers ---
+    function renderHome() {
+        const listContainer = document.getElementById('shortcut-list-container');
+        listContainer.innerHTML = '';
+
+        shortcuts.forEach(item => {
+            const el = document.createElement('div');
+            el.className = 'shortcut-item';
+            
+            // Onclick wrapper prevents firing when clicking the button directly
+            el.onclick = (e) => {
+                if(!e.target.classList.contains('btn')) {
+                    router('detail', item.id);
+                }
+            };
+
+            const btnText = item.link ? 'Get' : 'Coming Soon';
+            const btnClass = item.link ? 'btn' : 'btn disabled';
+            const btnHref = item.link ? item.link : '#';
+
+            el.innerHTML = `
+                <div class="shortcut-header-desktop">
+                    <img src="" class="shortcut-icon" alt="${item.title}">
+                    <a href="${btnHref}" class="${btnClass}" target="_blank">${btnText}</a>
+                </div>
+                <div class="shortcut-info">
+                    <div class="shortcut-title">${item.title}</div>
+                    <div class="shortcut-tagline">${item.tagline}</div>
+                </div>
+            `;
+            listContainer.appendChild(el);
+        });
+    }
+
+    function renderDetail(id) {
+        const item = shortcuts.find(s => s.id === id);
+        if (!item) return;
+
+        const content = document.getElementById('detail-content');
+        
+        // Setup Screenshots
+        let screenshotsHtml = '';
+        for(let i=0; i<item.previewCount; i++) {
+            screenshotsHtml += `<div class="screenshot">Preview ${i+1}</div>`;
+        }
+
+        // Setup Devices
+        const devicesHtml = item.devices.map(d => `<span class="device-badge">${d}</span>`).join('');
+        
+        // Setup Versions List
+        let versionsHtml = '<ul style="list-style:none; padding:0;">';
+        for (const [os, ver] of Object.entries(item.versions)) {
+            versionsHtml += `<li><strong style="color:var(--text-color)">${os}:</strong> ${ver}</li>`;
+        }
+        versionsHtml += '</ul>';
+
+        // Setup Steps
+        const setupHtml = item.setup.map(step => `<li>${step}</li>`).join('');
+
+        // UA
+        const { device, os } = getDeviceDetails();
+
+        // Button Logic
+        const btnText = item.link ? 'Get' : 'Coming Soon';
+        const btnClass = item.link ? 'btn' : 'btn disabled';
+        const btnHref = item.link ? item.link : '#';
+
+        content.innerHTML = `
+            <div class="detail-header">
+                <img src="" class="detail-icon" alt="${item.title}">
+                <div class="detail-meta">
+                    <h1>${item.title}</h1>
+                    <h4>${item.tagline}</h4>
+                    <a href="${btnHref}" class="${btnClass}" style="padding: 10px 30px; font-size:1rem;" target="_blank">${btnText}</a>
+                </div>
+            </div>
+
+            <div class="glass-panel">
+                <div class="whats-new">
+                    <div class="version-row">
+                        <span style="color:var(--secondary-text)">Current Version: ${item.version}</span>
+                        <a onclick="openVersionHistory('${item.id}')" class="version-link">Version History &rarr;</a>
+                    </div>
+                    <p style="color:var(--text-color); margin-top:10px;"><strong>What's New?</strong></p>
+                    <p>${item.whatsNew[0].note}</p>
+                </div>
+
+                <div class="section-box">
+                    <div class="section-title">Preview</div>
+                    <div class="screenshots-container">
+                        ${screenshotsHtml}
+                    </div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="detail-main">
+                        <div class="section-box">
+                            <div class="section-title">Description</div>
+                            <p>${item.description}</p>
+                        </div>
+                        
+                         <div class="section-box">
+                            <div class="section-title">Setup</div>
+                            <ul>${setupHtml}</ul>
+                        </div>
+                    </div>
+
+                    <div class="detail-sidebar">
+                        <div class="section-box">
+                            <div class="section-title">Compatibility</div>
+                            
+                            <div class="ua-container">
+                                <svg class="icon ua-icon" viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
+                                <div class="ua-text">
+                                    <span class="ua-device">${device}</span>
+                                    <span class="ua-os">${os}</span>
+                                </div>
+                            </div>
+                            
+                            <p style="font-size:0.85rem; margin-top:15px;">Supported Devices:</p>
+                            <div>${devicesHtml}</div>
+                            
+                            <p style="font-size:0.85rem; margin-top:15px;">Supported Versions:</p>
+                            ${versionsHtml}
+                        </div>
+
+                        ${item.dependencies ? `
+                        <div class="section-box">
+                            <div class="section-title">Dependencies</div>
+                            <p>${item.dependencies}</p>
+                        </div>` : ''}
+
+                         <div class="section-box">
+                            <div class="section-title">Places To Use It</div>
+                            <a href="#" onclick="router('places')" style="color:var(--accent-color); display:flex; align-items:center; gap:5px;">
+                                ${item.places} 
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+                            </a>
+                        </div>
+                        
+                        ${item.notes ? `
+                        <div class="section-box">
+                            <div class="section-title">Notes</div>
+                            <p>${item.notes}</p>
+                        </div>` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // --- Modal Logic ---
+    function openVersionHistory(id) {
+        const item = shortcuts.find(s => s.id === id);
+        const modal = document.getElementById('version-modal');
+        const content = document.getElementById('modal-content');
+        
+        let html = '<ul style="list-style:none; padding:0;">';
+        item.whatsNew.forEach(v => {
+            html += `
+                <li style="margin-bottom:15px; border-bottom:1px solid var(--glass-border); padding-bottom:10px;">
+                    <div style="font-weight:600; color:var(--text-color);">${v.ver}</div>
+                    <div style="color:var(--secondary-text); font-size:0.9rem;">${v.note}</div>
+                </li>
+            `;
+        });
+        
+        // Add logic for "Old Link" specifically for Device Details
+        if(item.oldLink) {
+             html += `
+                <li style="margin-top:15px;">
+                    <a href="${item.oldLink}" class="btn" style="background:#333; font-size:0.8rem;">Download v1.0 (Old)</a>
+                </li>
+            `;
+        }
+
+        html += '</ul>';
+        content.innerHTML = html;
+        modal.classList.add('open');
+    }
+
+    function closeModal() {
+        document.getElementById('version-modal').classList.remove('open');
+    }
+
+    // Close modal on outside click
+    window.onclick = function(event) {
+        const modal = document.getElementById('version-modal');
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+
+    // Initialize
+    renderHome();
+
+</script>
+</body>
+</html>
