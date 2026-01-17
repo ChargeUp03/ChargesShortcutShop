@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Charge's Shortcut Shop</title>
 
-    <link rel="icon" type="image/png" sizes="32x32" href="/ChargesShortcutShop/favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="/ChargesShortcutShop/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/ChargesShortcutShop/favicon-16x16.png">
     <link rel="shortcut icon" type="image/x-icon" href="/ChargesShortcutShop/favicon.ico">
 
@@ -42,24 +42,18 @@
             --accent-color: #0071e3;
             --text-color: #f5f5f7;
             --secondary-text: #98989d;
-            
             --glass-bg: rgba(27, 27, 28, 0.85);
             --glass-border: rgba(255, 255, 255, 0.1);
             --glass-blur: blur(25px);
             --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-            
             --radius: 20px;
             --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            
-            /* Status Colors */
             --status-green-bg: rgba(50, 215, 75, 0.15);
             --status-green-border: rgba(50, 215, 75, 0.3);
             --status-green-text: #32d74b;
-
             --status-yellow-bg: rgba(255, 214, 10, 0.15);
             --status-yellow-border: rgba(255, 214, 10, 0.3);
             --status-yellow-text: #ffd60a;
-
             --status-red-bg: rgba(255, 69, 58, 0.15);
             --status-red-border: rgba(255, 69, 58, 0.3);
             --status-red-text: #ff453a;
@@ -71,123 +65,88 @@
         body {
             font-family: var(--font-stack);
             background-color: var(--bg-color);
-            background-image: radial-gradient(circle at 50% -20%, rgba(0, 113, 227, 0.15), transparent 50%);
+            /* Updated Gradient Logic: More pronounced, dynamic color variable */
+            background-image: radial-gradient(circle at 50% 0%, var(--dynamic-bg-color, rgba(0, 113, 227, 0.4)), transparent 70%);
+            background-attachment: fixed; /* Keeps gradient fixed while scrolling */
             color: var(--text-color);
             -webkit-font-smoothing: antialiased;
             min-height: 100vh;
             overflow-y: scroll;
+            transition: background-image 0.5s ease; /* Smooth color transition */
         }
 
-        /* --- Typography Restoration --- */
+        /* Typography */
         h1 { font-size: 2rem; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.02em; }
         h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.01em; }
         h3 { font-size: 1.3rem; font-weight: 600; margin-bottom: 10px; margin-top: 25px; }
         h4 { font-size: 1.1rem; font-weight: 400; color: var(--secondary-text); margin-bottom: 15px; }
         p { line-height: 1.6; color: var(--secondary-text); margin-bottom: 15px; font-size: 1rem; }
-        ul { list-style-position: inside; color: var(--secondary-text); margin-bottom: 15px; line-height: 1.5; }
+        ul, ol { list-style-position: inside; color: var(--secondary-text); margin-bottom: 15px; line-height: 1.5; }
         li { margin-bottom: 8px; }
-
-        /* --- Icons --- */
+        
+        /* Icons */
         .icon { width: 20px; height: 20px; fill: currentColor; }
         .icon-sm { width: 16px; height: 16px; fill: currentColor; }
 
-        /* --- Header --- */
+        /* Header */
         header {
-            position: sticky;
-            top: 0;
-            z-index: 500;
+            position: sticky; top: 0; z-index: 500;
             background: rgba(21, 21, 21, 0.85);
             backdrop-filter: saturate(180%) blur(20px);
             -webkit-backdrop-filter: saturate(180%) blur(20px);
             border-bottom: 1px solid var(--glass-border);
             height: 60px;
         }
-
         .header-content {
-            max-width: 980px;
-            margin: 0 auto;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 24px;
-            position: relative;
-            background: transparent;
-            z-index: 501;
+            max-width: 980px; margin: 0 auto; height: 100%;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px; position: relative; z-index: 501;
         }
-
         .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-        .logo-img { width: 32px; height: 32px; background-color: #333; border-radius: 8px; object-fit: cover; }
+        .logo-img { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; }
         .site-title { font-weight: 700; font-size: 1.1rem; letter-spacing: -0.01em; }
 
         .desktop-nav { display: flex; align-items: center; margin-left: auto; }
-        .desktop-nav a {
-            color: var(--secondary-text);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin-left: 24px;
-            transition: color 0.2s;
-        }
+        .desktop-nav a { color: var(--secondary-text); text-decoration: none; font-size: 0.9rem; font-weight: 500; margin-left: 24px; transition: color 0.2s; }
         .desktop-nav a:hover, .desktop-nav a.active-link { color: var(--accent-color); }
-
         .icon-btn { background: none; border: none; color: var(--accent-color); cursor: pointer; padding: 5px; }
         .hamburger-btn { display: none; }
 
         /* Scroll Banner */
         .header-scroll {
             position: fixed; top: 60px; left: 0; width: 100%; height: 60px;
-            background: rgba(27, 27, 28, 0.95);
-            backdrop-filter: blur(20px);
+            background: rgba(27, 27, 28, 0.95); backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 24px; opacity: 0; pointer-events: none;
-            transform: translateY(-100%); transition: all 0.3s ease;
-            z-index: 400;
+            transform: translateY(-100%); transition: all 0.3s ease; z-index: 400;
         }
         .header-scroll.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        .scroll-icon { 
-            width: 36px; height: 36px; border-radius: 8px; background: #333; object-fit: cover; 
-            position: absolute; left: 50%; transform: translateX(-50%);
-        }
+        .scroll-icon { width: 36px; height: 36px; border-radius: 8px; background: #333; object-fit: cover; position: absolute; left: 50%; transform: translateX(-50%); }
 
-        /* Search Overlay */
+        /* Search */
         .search-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); z-index: 2000;
-            display: none; opacity: 0; transition: opacity 0.2s; backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.5); z-index: 2000; display: none;
+            opacity: 0; transition: opacity 0.2s; backdrop-filter: blur(5px);
         }
         .search-container.open { display: block; opacity: 1; }
-
-        .search-bar-wrapper {
-            background: #1c1c1e; padding: 15px 24px; border-bottom: 1px solid var(--glass-border);
-            display: flex; align-items: center; gap: 10px;
-        }
-        .search-input {
-            flex-grow: 1; background: rgba(255,255,255,0.1); border: none; padding: 12px 15px;
-            border-radius: 10px; color: white; font-size: 1rem; font-family: var(--font-stack);
-        }
-        .search-input:focus { outline: 2px solid var(--accent-color); }
-        .search-results {
-            max-width: 600px; margin: 20px auto; background: var(--glass-bg);
-            border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden;
-            display: none;
-        }
+        .search-bar-wrapper { background: #1c1c1e; padding: 15px 24px; border-bottom: 1px solid var(--glass-border); display: flex; align-items: center; gap: 10px; }
+        .search-input { flex-grow: 1; background: rgba(255,255,255,0.1); border: none; padding: 12px 15px; border-radius: 10px; color: white; font-size: 1rem; font-family: var(--font-stack); }
+        .search-results { max-width: 600px; margin: 20px auto; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; display: none; }
         .search-results.has-results { display: block; }
-        .result-item {
-            display: flex; align-items: center; gap: 15px; padding: 12px 20px;
-            border-bottom: 1px solid var(--glass-border); cursor: pointer; transition: background 0.2s;
-        }
+        .result-item { display: flex; align-items: center; gap: 15px; padding: 12px 20px; border-bottom: 1px solid var(--glass-border); cursor: pointer; transition: background 0.2s; }
         .result-item:hover { background: rgba(255,255,255,0.05); }
-        .result-name { font-weight: 500; font-size: 1rem; }
-        .no-results { padding: 20px; text-align: center; color: var(--secondary-text); }
+        .result-icon { width: 32px; height: 32px; border-radius: 8px; background: #333; object-fit: cover; }
 
         /* Mobile Menu */
         .mobile-menu {
-            position: fixed; top: 60px; left: 0; width: 100%; height: calc(100vh - 60px);
-            background: var(--bg-color); z-index: 99; display: none; flex-direction: column; padding: 24px;
+            position: fixed; top: 60px; right: 0; width: 100%; height: calc(100vh - 60px);
+            background: var(--bg-color); z-index: 99;
+            display: flex; flex-direction: column; padding: 24px;
+            transform: translateX(100%); transition: transform 0.3s ease-in-out; /* Slide Animation */
         }
-        .mobile-menu.open { display: flex; }
+        .mobile-menu.open { transform: translateX(0); }
         .mobile-menu a, .mobile-menu button {
             font-size: 1.5rem; font-weight: 600; color: var(--text-color);
             text-decoration: none; padding: 15px 0; border-bottom: 1px solid var(--glass-border);
@@ -204,20 +163,19 @@
         .hero-banner {
             width: 100%; min-height: 200px;
             background: linear-gradient(to top right, #0000ff 0%, #ff9900 100%);
-            border-radius: var(--radius); display: flex; align-items: center; justify-content: center;
-            margin-bottom: 30px; border: 1px solid var(--glass-border); padding: 40px; text-align: center;
+            /* Fix: Use overflow hidden to clip gradient at corners */
+            border-radius: var(--radius); overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 30px; border: 1px solid var(--glass-border);
+            padding: 40px; text-align: center;
         }
-        .hero-content h1 { 
-            font-size: clamp(1.5rem, 5vw, 2.5rem); font-weight: 700; line-height: 1.2;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.3); margin-bottom: 0;
-        }
+        .hero-content h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); font-weight: 700; line-height: 1.2; text-shadow: 0 4px 10px rgba(0,0,0,0.3); margin-bottom: 0; }
 
         /* Components */
-        .glass-panel {
-            background: var(--glass-bg); backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--glass-border); border-radius: var(--radius);
-            padding: 24px; margin-bottom: 24px;
-        }
+        .glass-panel { background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 24px; margin-bottom: 24px; }
+        
+        /* Buttons */
+        .btn-group { display: inline-flex; position: relative; vertical-align: middle; }
         .btn {
             background-color: var(--accent-color); color: white; border: none; border-radius: 99px;
             padding: 8px 22px; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none;
@@ -225,82 +183,73 @@
         }
         .btn:hover { transform: scale(1.02); filter: brightness(1.1); }
         .btn.disabled { background-color: rgba(255,255,255,0.1); color: var(--secondary-text); pointer-events: none; }
+        
+        /* Split Button Styles */
+        .split-main { border-top-right-radius: 0; border-bottom-right-radius: 0; border-right: 1px solid rgba(255,255,255,0.2); }
+        .split-arrow { border-top-left-radius: 0; border-bottom-left-radius: 0; padding: 8px 12px; }
+        
+        /* Dropdown Menu */
+        .dropdown-menu {
+            position: absolute; top: 110%; right: 0;
+            background: #2c2c2e; border: 1px solid var(--glass-border);
+            border-radius: 12px; padding: 5px; width: 180px;
+            display: none; flex-direction: column; z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .dropdown-menu.show { display: flex; }
+        .dropdown-item {
+            background: none; border: none; color: white; padding: 10px;
+            text-align: left; font-size: 0.9rem; border-radius: 8px; cursor: pointer;
+        }
+        .dropdown-item:hover { background: rgba(255,255,255,0.1); }
 
         /* Detail Page */
         .back-btn { background: transparent; color: var(--accent-color); padding: 0; margin-bottom: 35px; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
         .detail-header { display: flex; gap: 24px; margin-bottom: 30px; align-items: flex-start; }
-        
-        /* Restored: Detailed Image Box */
-        .detail-icon { 
-            width: 120px; height: 120px; min-width: 120px; 
-            border-radius: 28px; background-color: #333; 
-            box-shadow: var(--shadow-lg); object-fit: cover; 
-            border: 1px solid var(--glass-border);
-        }
-        
+        .detail-icon { width: 120px; height: 120px; min-width: 120px; border-radius: 28px; background-color: #333; box-shadow: var(--shadow-lg); object-fit: cover; border: 1px solid var(--glass-border); }
         .detail-meta { padding-top: 10px; }
         .info-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
         .section-box { margin-bottom: 24px; }
         .section-title { font-weight: 600; margin-bottom: 10px; font-size: 1.1rem; color: var(--text-color); }
         
-        /* Compatibility Box */
-        .ua-container {
-            border: 1px solid transparent; border-radius: 12px;
-            padding: 15px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 5px;
-        }
+        /* Setup List Styling (Fix for Bullet + Number) */
+        ol.setup-list { list-style: none; counter-reset: setup-counter; padding-left: 0; }
+        ol.setup-list li { counter-increment: setup-counter; margin-bottom: 8px; position: relative; padding-left: 25px; }
+        ol.setup-list li::before { content: counter(setup-counter) "."; position: absolute; left: 0; font-weight: 600; color: var(--accent-color); }
+
+        /* Compatibility */
+        .ua-container { border: 1px solid transparent; border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 5px; }
         .ua-status { font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: 8px; }
         .status-supported { background: var(--status-green-bg); border-color: var(--status-green-border); color: var(--status-green-text); }
         .status-partial { background: var(--status-yellow-bg); border-color: var(--status-yellow-border); color: var(--status-yellow-text); }
         .status-unsupported { background: var(--status-red-bg); border-color: var(--status-red-border); color: var(--status-red-text); }
 
-        /* Restored: Preview Images Container & Placeholder Style */
-        .screenshots-container { 
-            display: flex; gap: 15px; overflow-x: auto; 
-            padding-bottom: 20px; scroll-snap-type: x mandatory; 
-        }
-        .screenshot { 
-            width: 200px; height: 400px; /* Restored Dimensions */
-            background-color: #2c2c2e; border-radius: 12px; 
-            flex-shrink: 0; scroll-snap-align: center; 
-            display: flex; align-items: center; justify-content: center; 
-            border: 1px solid var(--glass-border); color: #888; font-size: 0.9rem;
-        }
-
-        /* Shortcut List Tiles */
+        .screenshots-container { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 20px; scroll-snap-type: x mandatory; }
+        .screenshot { width: 200px; height: 400px; background-color: #2c2c2e; border-radius: 12px; flex-shrink: 0; scroll-snap-align: center; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border); color: #888; }
+        
         .shortcut-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .shortcut-item {
-            display: flex; flex-direction: column; background: var(--glass-bg); backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 20px;
-            cursor: pointer; transition: transform 0.2s, background 0.2s;
-        }
+        .shortcut-item { display: flex; flex-direction: column; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 20px; cursor: pointer; transition: transform 0.2s, background 0.2s; }
         .shortcut-item:hover { background: rgba(44, 44, 46, 0.8); transform: translateY(-2px); }
         .shortcut-header-desktop { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        
-        /* Restored: Icon Placeholder Style */
-        .shortcut-icon { 
-            width: 64px; height: 64px; border-radius: 16px; 
-            background-color: #333; object-fit: cover; 
-            border: 1px solid var(--glass-border);
-        }
-        
+        .shortcut-icon { width: 64px; height: 64px; border-radius: 16px; background-color: #333; object-fit: cover; border: 1px solid var(--glass-border); }
         .shortcut-title { font-size: 1.15rem; font-weight: 600; margin-bottom: 6px; color: var(--text-color); }
         .shortcut-tagline { font-size: 0.9rem; color: var(--secondary-text); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000; display: none; align-items: center; justify-content: center; }
+        .modal-overlay.open { display: flex; }
+        .modal-card { background: #1c1c1e; width: 90%; max-width: 500px; border-radius: 20px; border: 1px solid var(--glass-border); padding: 24px; }
+        
+        .place-img { width: 100%; height: 180px; background: #333; border-radius: 12px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: #555; }
 
         @media (max-width: 768px) {
             .desktop-nav { display: none; }
             .hamburger-btn { display: block; }
             .info-grid { grid-template-columns: 1fr; }
             .detail-sidebar { order: -1; }
+            
+            /* Bigger touch target for split arrow on mobile */
+            .split-arrow { padding: 10px 18px; }
         }
-        
-        /* Modal */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000;
-            display: none; align-items: center; justify-content: center;
-        }
-        .modal-overlay.open { display: flex; }
-        .modal-card { background: #1c1c1e; width: 90%; max-width: 500px; border-radius: 20px; border: 1px solid var(--glass-border); padding: 24px; }
     </style>
 </head>
 <body>
@@ -309,9 +258,7 @@
     <div class="search-bar-wrapper">
         <svg class="icon" viewBox="0 0 24 24" style="fill:#888"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
         <input type="text" class="search-input" id="global-search-input" placeholder="Search Shortcuts..." onkeyup="performGlobalSearch()">
-        <button class="icon-btn" onclick="closeSearch()">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-        </button>
+        <button class="icon-btn" onclick="closeSearch()">&times;</button>
     </div>
     <div class="search-results" id="search-results-box"></div>
 </div>
@@ -319,7 +266,7 @@
 <header id="site-header">
     <div class="header-content">
         <div class="logo-area" onclick="router('home')">
-            <img src="" alt="" class="logo-img">
+            <img src="shortcutsshopfavicon-nobg.png" alt="" class="logo-img">
             <div class="site-title">Charge's Shortcut Shop</div>
         </div>
         
@@ -334,7 +281,7 @@
 
         <div class="hamburger-btn">
             <button class="icon-btn" onclick="toggleMenu()">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+                 <svg class="icon" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
             </button>
         </div>
     </div>
@@ -418,9 +365,11 @@
     const svgs = {
         'iPhone': '<path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/>',
         'iPad': '<path d="M19 1H5c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm0 18H5V5h14v14z"/>',
-        'Watch': '<path d="M9 2c-0.55 0-1 0.45-1 1v1h8V3c0-0.55-0.45-1-1-1H9z M16 4h-8v12h8V4z M9 17v1c0 0.55 0.45 1 1 1h6c0.55 0 1-0.45 1-1v-1H9z M18.5 6c-0.28 0-0.5 0.22-0.5 0.5v3c0 0.28 0.22 0.5 0.5 0.5s0.5-0.22 0.5-0.5v-3c0-0.28-0.22-0.5-0.5-0.5z"/>',
+        // Updated Watch Icon (Rounded Square with Crown)
+        'Watch': '<path d="M16 4h-1c0-.55-.45-1-1-1h-4c-.55 0-1 .45-1 1H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4c0 .55.45 1 1 1h4c.55 0 1-.45 1-1h1c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-2 0h-4v-.5h4V4zm-4 16v-.5h4v.5h-4zm7-3c0 1.1-.9 2-2 2H9c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h6c1.1 0 2 .9 2 2v10z"/> <path d="M17.5 7.5c0 .83.67 1.5 1.5 1.5v-3c-.83 0-1.5.67-1.5 1.5z"/>',
         'Mac': '<path d="M20,18c1.1,0,2-0.9,2-2V6c0-1.1-0.9-2-2-2H4C2.9,4,2,4.9,2,6v10c0,1.1,0.9,2,2,2H0v2h24v-2H20z M4,6h16v10H4V6z"/>',
-        'Vision Pro': '<path d="M2 9c0-1.1 0.9-2 2-2h16c1.1 0 2 0.9 2 2v6c0 1.1-0.9 2-2 2H4c-1.1 0-2-0.9-2-2V9z M6 11c-1.1 0-2 0.9-2 2s0.9 2 2 2 2-0.9 2-2-0.9-2-2-2z M18 11c-1.1 0-2 0.9-2 2s0.9 2 2 2 2-0.9 2-2-0.9-2-2-2z"/>'
+        // Updated Vision Pro Icon (Goggles)
+        'Vision Pro': '<path d="M2 9c0-1.1.9-2 2-2h16c1.1 0 2 .9 2 2v5c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V9zm2 0v5h5.5c.83 0 1.5.67 1.5 1.5S11.67 17 12.5 17s1.5-.67 1.5-1.5.67-1.5 1.5-1.5H20V9H4z"/>'
     };
     function getDeviceIcon(str) {
         if(str.includes('iPhone')) return svgs['iPhone'];
@@ -434,90 +383,83 @@
     // --- Data ---
     const shortcuts = [
         {
-            id: 'device-details',
-            title: 'Get Device Details',
-            version: 'v2.0',
-            tagline: 'View information about your device',
-            description: 'Get Device Details allows you to view all sorts of information about your device.',
+            id: 'device-details', title: 'Get Device Details', version: 'v2.0', tagline: 'View information about your device',
+            description: 'Get Device Details allows you to view all sorts of information about your device, from OS, to network, to even your screen size! You can also create a report of all the information that it can pull.',
             whatsNew: [{ ver: 'v2.0', note: 'Added Get Report; Added About' }, { ver: 'v1.0', note: 'Initial Release' }],
-            link: 'https://www.icloud.com/shortcuts/6478bd3e3a9049b285f1e7788672b699',
-            oldLink: 'https://www.icloud.com/shortcuts/ec7c7570437142718ee8b063c9062f1d',
-            previewCount: 5,
+            link: 'https://www.icloud.com/shortcuts/6478bd3e3a9049b285f1e7788672b699', previewCount: 5,
             devices: ['iPhone', 'iPad', 'Apple Watch (partial)', 'Mac (partial)', 'Vision Pro'],
-            versions: { 'iPhone': 'iOS 13+', 'iPad': 'iPadOS 13+', 'Watch': 'watchOS 7+', 'Mac': 'macOS 12+', 'Vision Pro': 'visionOS 1+' },
-            setup: ['1. Select Get at the top of this page', '2. Select Get Shortcut at the bottom of the iCloud page', '3. Select Add Shortcut'],
-            places: 'Shortcuts App'
+            versions: { 'iPhone': 'iOS 13-26', 'iPad': 'iPadOS 13-26', 'Watch': 'watchOS 7-26', 'Mac': 'macOS 12-26', 'Vision Pro': 'visionOS 1-26' },
+            places: 'Shortcuts App',
+            setup: ['Select Get at the top of this page', 'Select Get Shortcut at the bottom of the iCloud page', 'Select Add Shortcut'],
+            color: 'rgba(64, 131, 247, 0.4)', // #4083f7
+            img: 'getdevicedetails.png',
+            file: 'Get Device Details.shortcut'
         },
         {
-            id: 'quickweather',
-            title: 'QuickWeather',
-            version: 'v2.0',
-            tagline: 'See the weather at a glance!',
+            id: 'quickweather', title: 'QuickWeather', version: 'v2.0', tagline: 'See the weather at a glance!',
             description: 'See the weather quickly, or pull down the notification to view more information.',
             whatsNew: [{ ver: 'v2.0', note: 'Added Apple Watch detection' }, { ver: 'v1.0', note: 'Created Shortcut' }],
-            link: 'https://www.icloud.com/shortcuts/fd392fe36ce44b67815915e3addf11bb',
-            oldLink: 'https://www.icloud.com/shortcuts/96c7e8b155484f18ae23288a32f32a95',
-            previewCount: 1,
+            link: 'https://www.icloud.com/shortcuts/fd392fe36ce44b67815915e3addf11bb', previewCount: 1,
             devices: ['iPhone', 'iPad', 'Apple Watch', 'Mac', 'Vision Pro'],
-            versions: { 'iPhone': 'iOS 13+', 'iPad': 'iPadOS 13+', 'Watch': 'watchOS 7+', 'Mac': 'macOS 11+', 'Vision Pro': 'visionOS 1+' },
-            setup: ['1. Select Get at the top of this page', '2. Select Get Shortcut at the bottom of the iCloud page', '3. Select Add Shortcut'],
-            places: 'Home Screen'
+            versions: { 'iPhone': 'iOS 13-26', 'iPad': 'iPadOS 13-26', 'Watch': 'watchOS 7-26', 'Mac': 'macOS 11-26', 'Vision Pro': 'visionOS 1-26' },
+            places: 'Home Screen, Control Center, Lock Screen',
+            setup: ['Select Get at the top of this page', 'Select Get Shortcut at the bottom of the iCloud page', 'Select Add Shortcut'],
+            color: 'rgba(83, 181, 242, 0.4)', // #53b5f2
+            img: 'quickweather.png',
+            file: 'QuickWeather.shortcut'
         },
         {
-            id: 'killswitch',
-            title: 'Connectivity Killswitch',
-            version: 'v1.0',
-            tagline: 'Quickly turn off all connectivity.',
+            id: 'killswitch', title: 'Connectivity Killswitch', version: 'v1.0', tagline: 'Quickly turn off all connectivity.',
             description: 'Turns off all connectivity.',
             whatsNew: [{ ver: 'v1.0', note: 'Created Shortcut' }],
-            link: 'https://www.icloud.com/shortcuts/44e79eba1eb54e93956d76d90490b50f',
-            previewCount: 2,
+            link: 'https://www.icloud.com/shortcuts/44e79eba1eb54e93956d76d90490b50f', previewCount: 2,
             devices: ['iPhone', 'iPad', 'Apple Watch', 'Mac', 'Vision Pro'],
-            versions: { 'iPhone': 'iOS 13+', 'iPad': 'iPadOS 13+', 'Watch': 'watchOS 7+', 'Mac': 'macOS 11+', 'Vision Pro': 'visionOS 1+' },
-            setup: ['1. Select Get at the top of this page', '2. Select Get Shortcut at the bottom of the iCloud page', '3. Select Add Shortcut'],
-            places: 'Home Screen'
+            versions: { 'iPhone': 'iOS 13-26', 'iPad': 'iPadOS 13-26', 'Watch': 'watchOS 7-26', 'Mac': 'macOS 11-26', 'Vision Pro': 'visionOS 1-26' },
+            places: 'Home Screen, Control Center, Lock Screen',
+            setup: ['Select Get at the top of this page', 'Select Get Shortcut at the bottom of the iCloud page', 'Select Add Shortcut'],
+            color: 'rgba(231, 98, 105, 0.4)', // #e76269
+            img: 'killswitch.png',
+            file: 'Connectivity Killswitch.shortcut'
         },
         {
-            id: 'fastnav',
-            title: 'FastNav',
-            version: 'v1.0',
-            tagline: 'Get to your favorite places faster!',
+            id: 'fastnav', title: 'FastNav', version: 'v1.0', tagline: 'Get to your favorite places faster!',
             description: 'Enter 3 places, then navigate to them with the tap of a button (or two)!',
             whatsNew: [{ ver: 'v1.0', note: 'Created Shortcut' }],
-            link: 'https://www.icloud.com/shortcuts/d574e411b4e6447680d0aae204e4b0bf',
-            previewCount: 2,
+            link: 'https://www.icloud.com/shortcuts/d574e411b4e6447680d0aae204e4b0bf', previewCount: 2,
             devices: ['iPhone', 'iPad', 'Apple Watch', 'Mac', 'Vision Pro'],
-            versions: { 'iPhone': 'iOS 13+', 'iPad': 'iPadOS 13+', 'Watch': 'watchOS 7+', 'Mac': 'macOS 11+', 'Vision Pro': 'visionOS 1+' },
-            setup: ['1. Select Get at the top of this page', '2. Select Get Shortcut at the bottom of the iCloud page', '3. Select Add Shortcut'],
-            places: 'Home Screen'
+            versions: { 'iPhone': 'iOS 13-26', 'iPad': 'iPadOS 13-26', 'Watch': 'watchOS 7-26', 'Mac': 'macOS 11-26', 'Vision Pro': 'visionOS 1-26' },
+            places: 'Home Screen',
+            setup: ['Select Get at the top of this page', 'Select Get Shortcut at the bottom of the iCloud page', 'Select Add Shortcut'],
+            extraSetup: ['Tap "..." on FastNav', 'Scroll down and enter 3 addresses you would like to navigate to'],
+            color: 'rgba(173, 117, 220, 0.4)', // #ad75dc
+            img: 'fastnav.png',
+            file: 'FastNav.shortcut'
         },
         {
-            id: 'selfdestruct',
-            title: 'Self Destruct',
-            version: 'v1.0',
-            tagline: 'A fun shortcut that self-destructs your device.',
+            id: 'selfdestruct', title: 'Self-Destruct', version: 'v1.0', tagline: 'A fun shortcut that self-destructs your device.',
             description: 'Blow up your device!',
             whatsNew: [{ ver: 'v1.0', note: 'Created Shortcut' }],
-            link: 'https://www.icloud.com/shortcuts/a0fb189bdd414285acdc7d99be85b313',
-            previewCount: 2,
+            link: 'https://www.icloud.com/shortcuts/a0fb189bdd414285acdc7d99be85b313', previewCount: 2,
             devices: ['iPhone', 'iPad', 'Apple Watch', 'Mac (partial)', 'Vision Pro'],
-            versions: { 'iPhone': 'iOS 13+', 'iPad': 'iPadOS 13+', 'Watch': 'watchOS 7+', 'Mac': 'macOS 11+', 'Vision Pro': 'visionOS 1+' },
-            setup: ['1. Select Get at the top of this page', '2. Select Get Shortcut at the bottom of the iCloud page', '3. Select Add Shortcut'],
-            places: 'Anywhere'
+            versions: { 'iPhone': 'iOS 13-26', 'iPad': 'iPadOS 13-26', 'Watch': 'watchOS 7-26', 'Mac': 'macOS 11-26', 'Vision Pro': 'visionOS 1-26' },
+            places: 'Anywhere',
+            setup: ['Select Get at the top of this page', 'Select Get Shortcut at the bottom of the iCloud page', 'Select Add Shortcut'],
+            color: 'rgba(231, 98, 105, 0.4)', // #e76269
+            img: 'selfdestruct.png',
+            file: 'Self-Destruct.shortcut'
         },
         {
-            id: 'mariokart',
-            title: 'Mario Kart Item Box',
-            version: 'v1.0',
-            tagline: 'Use some Mario Kart items!',
+            id: 'mariokart', title: 'Mario Kart Item Box', version: 'v1.0', tagline: 'Use some Mario Kart items!',
             description: 'Use some Mario Kart items!',
             whatsNew: [{ ver: 'v1.0', note: 'Created Shortcut' }],
-            link: null,
-            previewCount: 1,
+            link: null, previewCount: 1,
             devices: ['iPhone', 'iPad', 'Apple Watch', 'Mac', 'Vision Pro'],
-            versions: { 'iPhone': 'iOS 13+', 'iPad': 'iPadOS 13+', 'Watch': 'watchOS 7+', 'Mac': 'macOS 11+', 'Vision Pro': 'visionOS 1+' },
-            setup: ['1. Select Get at the top of this page', '2. Select Get Shortcut at the bottom of the iCloud page', '3. Select Add Shortcut'],
-            places: 'Anywhere'
+            versions: { 'iPhone': 'iOS 13-26', 'iPad': 'iPadOS 13-26', 'Watch': 'watchOS 7-26', 'Mac': 'macOS 11-26', 'Vision Pro': 'visionOS 1-26' },
+            places: 'Anywhere',
+            setup: ['Select Get at the top of this page', 'Select Get Shortcut at the bottom of the iCloud page', 'Select Add Shortcut'],
+            color: 'rgba(64, 131, 247, 0.4)', // #4083f7
+            img: 'itembox.png'
+            // No file for Mario Kart as requested
         }
     ];
 
@@ -542,7 +484,7 @@
         if (results.length === 0) { box.innerHTML = '<div class="no-results">No Results Found</div>'; return; }
         box.innerHTML = results.map(item => `
             <div class="result-item" onclick="closeSearch(); router('detail', '${item.id}')">
-                <img src="" class="result-icon">
+                <img src="${item.img}" class="result-icon">
                 <div class="result-name">${item.title}</div>
             </div>
         `).join('');
@@ -553,21 +495,35 @@
         const ua = navigator.userAgent;
         let status = 'unsupported';
         let msg = 'Not Supported';
+        let deviceOS = '';
+
         const iosMatch = ua.match(/OS (\d+)_/);
+        
         if (/iPhone/.test(ua)) {
-            if (iosMatch && parseInt(iosMatch[1]) >= 13) { status = 'supported'; msg = 'Supported (iOS ' + iosMatch[1] + ')'; }
-            else { msg = 'iOS Update Required'; }
+            deviceOS = `iPhone (iOS ${iosMatch ? iosMatch[1] : '?'})`;
+            if (iosMatch && parseInt(iosMatch[1]) >= 13) { status = 'supported'; msg = 'Supported'; }
+            else { msg = 'Update Required'; }
         } else if (/iPad/.test(ua)) {
             const ipadMatch = ua.match(/OS (\d+)_/);
+            // iPad detection workaround for desktop mode
             if ((ipadMatch && parseInt(ipadMatch[1]) >= 13) || (/Mac/.test(ua) && 'ontouchend' in document)) { 
-                status = 'supported'; msg = 'Supported (iPadOS)'; 
-            } else { msg = 'iPadOS Update Required'; }
+                deviceOS = 'iPad (iPadOS)';
+                status = 'supported'; msg = 'Supported'; 
+            } else { 
+                deviceOS = 'iPad';
+                msg = 'Update Required'; 
+            }
         } else if (/Mac/.test(ua) && !/iPhone|iPad/.test(ua)) {
+            deviceOS = 'Mac (macOS)';
             status = 'partial'; msg = 'Mac Detected (Check macOS 12+)';
         } else if (/Vision/.test(ua)) {
-            status = 'supported'; msg = 'Supported (visionOS)';
-        } else { msg = 'Device Not Supported'; }
-        return { status, msg };
+            deviceOS = 'Vision Pro (visionOS)';
+            status = 'supported'; msg = 'Supported';
+        } else { 
+            deviceOS = 'Unknown Device';
+            msg = 'Device Not Supported'; 
+        }
+        return { status, msg, deviceOS };
     }
 
     // --- Router ---
@@ -578,10 +534,38 @@
         if(document.getElementById('nav-'+viewName)) document.getElementById('nav-'+viewName).classList.add('active-link');
         document.getElementById('header-scroll').classList.remove('visible');
         window.scrollTo(0,0);
-        if (viewName === 'home') renderHome();
-        else if (viewName === 'detail' && dataId) renderDetail(dataId);
+        
+        // Reset or Set Background Color
+        const root = document.documentElement;
+        if (viewName === 'detail' && dataId) {
+            renderDetail(dataId);
+        } else {
+            // Default blue for Home/About/Places
+            root.style.setProperty('--dynamic-bg-color', 'rgba(0, 113, 227, 0.4)');
+            if (viewName === 'home') renderHome();
+        }
     }
+    
     function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
+
+    // --- Swipe Back Gesture ---
+    let touchStartX = 0;
+    let touchStartY = 0;
+    document.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+    });
+    document.addEventListener('touchend', e => {
+        const touchEndX = e.changedTouches[0].screenX;
+        const touchEndY = e.changedTouches[0].screenY;
+        // Check if swipe started near left edge (first 50px)
+        if (touchStartX < 50 && touchEndX > touchStartX + 50 && Math.abs(touchEndY - touchStartY) < 50) {
+            // Go back to home if on a detail page
+            if (document.getElementById('detail-view').classList.contains('active')) {
+                router('home');
+            }
+        }
+    });
 
     // --- Renderers ---
     function renderHome() {
@@ -590,13 +574,16 @@
         shortcuts.forEach(item => {
             const el = document.createElement('div');
             el.className = 'shortcut-item';
-            el.onclick = (e) => { if(!e.target.classList.contains('btn')) router('detail', item.id); };
+            el.onclick = (e) => { 
+                // Prevent routing if clicking buttons inside
+                if(!e.target.closest('.btn') && !e.target.closest('.dropdown-item')) router('detail', item.id); 
+            };
             const btnText = item.link ? 'Get' : 'Coming Soon';
             const btnClass = item.link ? 'btn' : 'btn disabled';
             const btnHref = item.link ? item.link : '#';
             el.innerHTML = `
                 <div class="shortcut-header-desktop">
-                    <img src="" class="shortcut-icon" alt="${item.title}">
+                    <img src="${item.img}" class="shortcut-icon" alt="${item.title}">
                     <a href="${btnHref}" class="${btnClass}" target="_blank">${btnText}</a>
                 </div>
                 <div class="shortcut-title">${item.title}</div>
@@ -609,7 +596,12 @@
     function renderDetail(id) {
         const item = shortcuts.find(s => s.id === id);
         if (!item) return;
-        document.getElementById('scroll-icon').src = '';
+
+        // Set Dynamic Color
+        if(item.color) document.documentElement.style.setProperty('--dynamic-bg-color', item.color);
+
+        // Header Scroll Sync
+        document.getElementById('scroll-icon').src = item.img;
         document.getElementById('scroll-get-btn').href = item.link || '#';
         if(!item.link) document.getElementById('scroll-get-btn').classList.add('disabled');
         else document.getElementById('scroll-get-btn').classList.remove('disabled');
@@ -622,10 +614,10 @@
         }
         versionsHtml += '</ul>';
 
-        // Restored: Placeholders for Screenshots (Image 1, Image 2...)
+        // Preview Images Tag Generation
         let screenshotsHtml = '';
         for(let i=0; i<item.previewCount; i++) {
-            screenshotsHtml += `<div class="screenshot">Image ${i+1}</div>`;
+            screenshotsHtml += `<div class="screenshot"><img src="" alt="Screenshot ${i+1}" style="display:none;">Image ${i+1}</div>`;
         }
 
         const comp = checkCompatibility();
@@ -633,13 +625,37 @@
         const btnClass = item.link ? 'btn' : 'btn disabled';
         const btnHref = item.link ? item.link : '#';
 
+        // Download Dropdown HTML
+        let downloadMenuHtml = '';
+        if (item.file) {
+            downloadMenuHtml = `
+                <div class="btn-group">
+                    <a href="${btnHref}" class="${btnClass} split-main" target="_blank">${btnText}</a>
+                    <button class="${btnClass} split-arrow" onclick="toggleDropdown(event, '${item.id}')">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                    </button>
+                    <div id="dropdown-${item.id}" class="dropdown-menu">
+                        <button class="dropdown-item" onclick="copyLink('${item.link}')">Copy Link</button>
+                        <a href="${item.file}" download class="dropdown-item">Download Shortcut</a>
+                    </div>
+                </div>
+            `;
+        } else {
+             downloadMenuHtml = `<a href="${btnHref}" class="${btnClass}" target="_blank">${btnText}</a>`;
+        }
+
+        // Status Icon Logic (Check vs X)
+        const statusIcon = comp.status === 'unsupported' 
+            ? '<svg class="icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>' // X
+            : '<svg class="icon" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>'; // Check
+
         content.innerHTML = `
             <div class="detail-header">
-                <img src="" class="detail-icon" alt="${item.title}">
+                <img src="${item.img}" class="detail-icon" alt="${item.title}">
                 <div class="detail-meta">
                     <h1>${item.title}</h1>
                     <h4>${item.tagline}</h4>
-                    <a href="${btnHref}" class="${btnClass}" style="padding: 10px 30px; font-size:1rem;" target="_blank">${btnText}</a>
+                    ${downloadMenuHtml}
                 </div>
             </div>
 
@@ -661,16 +677,21 @@
                 <div class="info-grid">
                     <div class="detail-main">
                         <div class="section-box"><div class="section-title">Description</div><p>${item.description}</p></div>
-                        <div class="section-box"><div class="section-title">Setup</div><ul>${item.setup.map(s=>`<li>${s}</li>`).join('')}</ul></div>
+                        <div class="section-box">
+                            <div class="section-title">Setup</div>
+                            <ol class="setup-list">${item.setup.map(s=>`<li>${s}</li>`).join('')}</ol>
+                        </div>
+                        ${item.extraSetup ? `<div class="section-box"><div class="section-title">Additional Setup</div><ol class="setup-list">${item.extraSetup.map(s=>`<li>${s}</li>`).join('')}</ol></div>` : ''}
                     </div>
                     <div class="detail-sidebar">
                         <div class="section-box">
                             <div class="section-title">Compatibility</div>
                             <div class="ua-container status-${comp.status}">
                                 <div class="ua-status">
-                                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                                    ${statusIcon}
                                     ${comp.msg}
                                 </div>
+                                <div style="font-size:0.85rem; opacity:0.8; margin-top:5px;">Your Device: ${comp.deviceOS}</div>
                             </div>
                             <p style="font-size:0.85rem; margin-top:15px;">Supported Devices:</p>
                             <div style="display:flex; flex-wrap:wrap; gap:8px;">${item.devices.map(d=>`<span style="background:rgba(255,255,255,0.1); padding:4px 8px; border-radius:6px; font-size:0.8rem;"><svg class="icon-sm" viewBox="0 0 24 24" style="margin-right:5px; vertical-align:text-bottom;">${getDeviceIcon(d)}</svg>${d}</span>`).join('')}</div>
@@ -678,13 +699,38 @@
                             ${versionsHtml}
                         </div>
                         <div class="section-box">
-                            <div class="section-title">Places To Use It</div>
-                            <a href="#" onclick="router('places')" style="color:var(--accent-color); display:flex; align-items:center; gap:5px;">${item.places} &rarr;</a>
+                            <div class="section-title" onclick="router('places')" style="cursor:pointer; color:var(--accent-color);">Places To Use It &rarr;</div>
+                            <p style="font-size:0.9rem;">${item.places}</p>
                         </div>
                     </div>
                 </div>
             </div>
         `;
+    }
+    
+    // --- Helper for Dropdown ---
+    function toggleDropdown(event, id) {
+        event.stopPropagation();
+        const dropdown = document.getElementById('dropdown-' + id);
+        // Close others
+        document.querySelectorAll('.dropdown-menu').forEach(el => {
+            if (el.id !== 'dropdown-' + id) el.classList.remove('show');
+        });
+        dropdown.classList.toggle('show');
+    }
+    
+    function copyLink(link) {
+        navigator.clipboard.writeText(link).then(() => {
+            alert('iCloud link copied to clipboard!');
+        });
+    }
+
+    // Close dropdowns on click outside
+    window.onclick = function(event) {
+        if (!event.target.matches('.split-arrow') && !event.target.closest('.split-arrow')) {
+            document.querySelectorAll('.dropdown-menu').forEach(el => el.classList.remove('show'));
+        }
+        if (event.target == document.getElementById('version-modal')) closeModal();
     }
 
     // Scroll Listener
@@ -713,7 +759,6 @@
         modal.classList.add('open');
     }
     function closeModal() { document.getElementById('version-modal').classList.remove('open'); }
-    window.onclick = function(event) { if (event.target == document.getElementById('version-modal')) closeModal(); }
 
     renderHome();
 </script>
