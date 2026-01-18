@@ -1,4 +1,14 @@
 # Charge's Shortcut Shop
-Shop for Shortcuts created by Charge
+Welcome to Charge's Shortcut Shop!
 
-Currently, this is a very early beta version. The completed version will be available soon.
+This App Store-inspired shop hosts Shortcuts that I've made--feel free to try any of them out and share them! 
+
+Features:
+- Clean, glassmorphic UI
+- Download .shortcut file
+- Device compatibility
+- High-quality screenshots
+- Full wiki
+- And more!
+
+Enjoy!
