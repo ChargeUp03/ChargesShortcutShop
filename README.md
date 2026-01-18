@@ -6,7 +6,8 @@ This App Store-inspired shop hosts Shortcuts that I've made--feel free to try an
 Features:
 - Clean, glassmorphic UI
 - Download .shortcut file
-- Device compatibility
+- Device and OS compatibility
+- App icons for mobile
 - High-quality screenshots
 - Full wiki
 - And more!
