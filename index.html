@@ -218,11 +218,17 @@
 
         .screenshots-container { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 20px; scroll-snap-type: x mandatory; }
         .screenshot { 
-            width: 200px; height: 400px; background-color: #2c2c2e; 
+            width: 200px; height: auto; background-color: transparent; 
             border-radius: 12px; flex-shrink: 0; scroll-snap-align: center; 
             display: flex; align-items: center; justify-content: center; 
             border: 1px solid var(--glass-border); color: #888; overflow: hidden;
         }
+        
+.screenshot img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
         
         .shortcut-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
         .shortcut-item { display: flex; flex-direction: column; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 20px; cursor: pointer; transition: transform 0.2s, background 0.2s; }
@@ -620,17 +626,18 @@
         }
         versionsHtml += '</ul>';
 
-        // Auto-detect image filenames based on shortcut ID (e.g., quickweather_1.png)
-       let screenshotsHtml = '';
+let screenshotsHtml = '';
 for(let i=0; i<item.previewCount; i++) {
-    // This version tries .PNG first, and if it fails (onerror), it tries .png
+    const imgSrc = `${item.id}_${i+1}.PNG`;
+    const fallbackSrc = `${item.id}_${i+1}.png`;
+    
     screenshotsHtml += `
-        <div class="screenshot">
-            <img src="${item.id}_${i+1}.PNG" 
+        <div class="screenshot" onclick="openLightbox('${imgSrc}', '${fallbackSrc}')">
+            <img src="${imgSrc}" 
                  alt="Preview ${i+1}" 
-                 style="width:100%; height:100%; object-fit:cover; border-radius:10px;" 
-                 onerror="this.onerror=null; this.src='${item.id}_${i+1}.png'">
+                 onerror="this.onerror=null; this.src='${fallbackSrc}'">
         </div>`;
+}
 }
 
         const comp = checkCompatibility();
@@ -779,6 +786,19 @@ for(let i=0; i<item.previewCount; i++) {
     function closeModal() { document.getElementById('version-modal').classList.remove('open'); }
 
     renderHome();
+
+    <div id="lightbox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:3000; justify-content:center; align-items:center; overflow-y:auto;" onclick="this.style.display='none'">
+    <img id="lightbox-img" style="max-width:95%; max-height:95%; border-radius:10px;">
+</div>
+
+    function openLightbox(src, fallback) {
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    lbImg.src = src;
+    lbImg.onerror = () => { lbImg.onerror = null; lbImg.src = fallback; };
+    lb.style.display = 'flex';
+}
+    
 </script>
 </body>
 </html>
